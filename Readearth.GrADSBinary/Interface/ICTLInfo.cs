@@ -32,7 +32,7 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 控制处理数据文件方式的变量。替换了旧版的FORMAT记录。
         /// </summary>
-        string Options { get; }
+        IOptions Options { get; }
         /// <summary>
         /// 定义格点数据显示到地图上的投影方式。
         /// </summary>
@@ -78,7 +78,7 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 基础数据块大小（bytes）
         /// </summary>
-        int BaseBlockSize { get; }
+        int BaseArraySize { get; }
         /// <summary>
         /// CTL文件是否已加载
         /// </summary>
@@ -107,6 +107,6 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 时次数据块大小（bytes）
         /// </summary>
-        int TimeBlockSize { get;  }
+        int TimePageSize { get; }
     }
 }

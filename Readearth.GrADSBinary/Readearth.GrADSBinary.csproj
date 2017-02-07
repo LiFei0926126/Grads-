@@ -84,6 +84,8 @@
     <Compile Include="DEF\Class\YDEFClass.cs" />
     <Compile Include="DEF\Class\ZDEFClass.cs" />
     <Compile Include="Class\GrADSEventArgs.cs" />
+    <Compile Include="DEF\Class\Options.cs" />
+    <Compile Include="DEF\Interface\IOptions.cs" />
     <Compile Include="Interface\IBinaryData.cs" />
     <Compile Include="Interface\ICTLInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -105,7 +105,7 @@ namespace Readearth.GrADSBinary
                 long dataLength = s.Length;
                 s.Close();
                 
-                if (CTLInfo.TimeBlockSize == dataLength / CTLInfo.TDEF.TSize)
+                if (CTLInfo.TimePageSize == dataLength / CTLInfo.TDEF.TSize)
                     _DataVerifyResult= true;
                 else
                     _DataVerifyResult= false;
@@ -440,7 +440,7 @@ namespace Readearth.GrADSBinary
         float Convert2Float(byte[] bytes)
         {
             byte[] tmp = new byte[4];
-            if (CTLInfo.Options.Contains("byteswapped"))
+            if (CTLInfo.Options.Byteswapped)
                 for (int mm = 0; mm < 4; mm++)
                     tmp[mm] = bytes[3 - mm];
             else

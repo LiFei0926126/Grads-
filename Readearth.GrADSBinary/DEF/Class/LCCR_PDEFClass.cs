@@ -7,7 +7,7 @@ namespace Readearth.GrADSBinary.DEF
     /// <summary>
     /// 
     /// </summary>
-    public class LCCR_PDEFClass : PDEFClass,IPDEF,ILCCR_PDEF
+    public class LCCR_PDEFClass : PDEFClass, IPDEF, ILCCR_PDEF
     {
         /// <summary>
         /// 

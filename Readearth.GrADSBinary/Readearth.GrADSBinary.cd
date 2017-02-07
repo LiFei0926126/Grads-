@@ -10,7 +10,7 @@
   <Class Name="Readearth.GrADSBinary.BinaryDataClass" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="7" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAAAxQAAAEAABAAEAAEEAAAAAAAAAAAAAAQA=</HashCode>
+      <HashCode>AAAAAAEAAAAxQAAAEAABAAEAAEEAAAAAAAQAAAAAAQA=</HashCode>
       <FileName>Class\BinaryDataClass.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -18,7 +18,7 @@
   <Class Name="Readearth.GrADSBinary.CTLInfoClass" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="8.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AhAABBAEAAgVAEAACwUBAAACAIEMAIAIAAAEBpJABIE=</HashCode>
+      <HashCode>ghAABBAEAAgVAMAACwUBAAACAIEMAAAIAAAEBpJABAE=</HashCode>
       <FileName>Class\CTLInfoClass.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -30,7 +30,7 @@
       <FileName>Class\GrADSEventArgs.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Readearth.GrADSBinary.DEF.LCC_PDEFClass" Collapsed="true">
+  <Class Name="Readearth.GrADSBinary.DEF.LCC_PDEFClass">
     <Position X="3.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAAEAAAAgAQAAAAAAAAAoAAAABCAgAAAAAQDAAAAA=</HashCode>
@@ -38,7 +38,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Readearth.GrADSBinary.DEF.LCCR_PDEFClass" Collapsed="true">
+  <Class Name="Readearth.GrADSBinary.DEF.LCCR_PDEFClass">
     <Position X="1" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAAEAAAAgAQAAAAAAAAAoAAAABCAgAAAAAQDAAAAA=</HashCode>
@@ -57,7 +57,7 @@
   <Class Name="Readearth.GrADSBinary.DEF.TDEFClass" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="5.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAACAAIAIAAEAAAAAAAAAAAAAAAAAAICAAAAAAAAI=</HashCode>
+      <HashCode>ADAAACQAIAAAAECAAAAAAAAAAAAAIAAAIAAAAAABAAI=</HashCode>
       <FileName>DEF\Class\TDEFClass.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -118,7 +118,7 @@
   <Interface Name="Readearth.GrADSBinary.ICTLInfo" Collapsed="true">
     <Position X="7" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AhAAAAAEAAgAAEAACQEAAAAAAAAMAIAIAAAEBJBABIA=</HashCode>
+      <HashCode>ghAAAAAEAAgAAMAACQEAAAAAAAAMAAAIAAAEBJBABAA=</HashCode>
       <FileName>Interface\ICTLInfo.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -146,7 +146,7 @@
   <Interface Name="Readearth.GrADSBinary.DEF.ITDEF" Collapsed="true">
     <Position X="7" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAAEAAAAAAAAAAAAAAAAAAICAAAAAAAAA=</HashCode>
+      <HashCode>ADAAAAQAAAAAAECAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>DEF\Interface\ITDEF.cs</FileName>
     </TypeIdentifier>
   </Interface>

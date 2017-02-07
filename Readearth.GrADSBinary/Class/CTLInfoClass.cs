@@ -14,12 +14,12 @@ namespace Readearth.GrADSBinary
     public class CTLInfoClass : Object, Readearth.GrADSBinary.ICTLInfo
     {
         #region 常量
-        const string empty ="";
+        const string empty = "";
         #endregion
 
         #region 成员变量
         string _ctlFielPath;
-        string _DSET = string.Empty, _Title = string.Empty, _Options = string.Empty;
+        string _DSET = string.Empty, _Title = string.Empty;
         float _Undef = float.NaN;
         //PDEFClass _PDEF = null;
         //XDEFClass _XDEF = null;
@@ -27,17 +27,18 @@ namespace Readearth.GrADSBinary
         //ZDEFClass _ZDEF = null;
         //TDEFClass _TDEF = null;
         //VARSClass _VARS = null;
-       IPDEF _PDEF = null;
-       IXDEF _XDEF = null;
-       IYDEF _YDEF = null;
-       IZDEF _ZDEF = null;
-       ITDEF _TDEF = null;
-       IVARS _VARS = null;
+        IOptions _Options = null;
+        IPDEF _PDEF = null;
+        IXDEF _XDEF = null;
+        IYDEF _YDEF = null;
+        IZDEF _ZDEF = null;
+        ITDEF _TDEF = null;
+        IVARS _VARS = null;
 
         LamProjection lp;
         bool _IsCTLFileLoaded = false;
 
-        double _Orgin_Lat=double.NaN;
+        double _Orgin_Lat = double.NaN;
         #endregion
 
         #region 构造函数
@@ -74,7 +75,7 @@ namespace Readearth.GrADSBinary
                 case "options":
                     tmp = new List<string>(paras);
                     tmp.RemoveAt(0);
-                    _Options = string.Join(" ", tmp.ToArray());
+                    _Options = new Options(string.Join(" ", tmp.ToArray()));
                     break;
                 case "undef":
                     _Undef = float.Parse(paras[1]);
@@ -252,7 +253,7 @@ namespace Readearth.GrADSBinary
         {
             XYPoint pXYIndex = new XYPoint();
 
-            pXYIndex.Long =(float) lon;
+            pXYIndex.Long = (float)lon;
             pXYIndex.Lat = (float)lat;
 
             IPDEF pPDEF = this.PDEF;
@@ -270,7 +271,7 @@ namespace Readearth.GrADSBinary
                     double y = xy.Y;
 
                     pXYIndex.ColIndex = (int)((x - xstart) / pLCC_PDEF.DX);
-                    pXYIndex.RowIndex = (int)((y - ystart) / pLCC_PDEF.DY);                    
+                    pXYIndex.RowIndex = (int)((y - ystart) / pLCC_PDEF.DY);
                     break;
                 case Pro_Type.LCCR:
                     ILCCR_PDEF pLCCR_PDEF = pPDEF as ILCCR_PDEF;
@@ -306,13 +307,13 @@ namespace Readearth.GrADSBinary
                 {
                     if (level >= pVariableClass.LevelCount)
                         throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
-                    pBinaryBlockIndex += level * BaseBlockSize;
+                    pBinaryBlockIndex += level * BaseArraySize;
                     break;
                 }
                 else
-                    pBinaryBlockIndex += pVariableClass.LevelCount * BaseBlockSize;
+                    pBinaryBlockIndex += pVariableClass.LevelCount * BaseArraySize;
             }
-            
+
             return pBinaryBlockIndex;
         }
         /// <summary>
@@ -321,7 +322,7 @@ namespace Readearth.GrADSBinary
         /// <param name="varIndex">变量索引</param>
         /// <param name="level">z维索引</param>
         /// <returns>开始位置</returns>
-        public int GetBinaryBlockIndex(int varIndex,  int level)
+        public int GetBinaryBlockIndex(int varIndex, int level)
         {
 
             int pBinaryBlockIndex = 0;
@@ -329,12 +330,12 @@ namespace Readearth.GrADSBinary
             for (int i = 0; i < varIndex; i++)
             {
                 pVariableClass = _VARS.VARS[i];
-                pBinaryBlockIndex += pVariableClass.LevelCount * BaseBlockSize;
+                pBinaryBlockIndex += pVariableClass.LevelCount * BaseArraySize;
             }
             pVariableClass = _VARS.VARS[varIndex];
             if (level >= pVariableClass.LevelCount)
                 throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
-            pBinaryBlockIndex += level * BaseBlockSize;
+            pBinaryBlockIndex += level * BaseArraySize;
             return pBinaryBlockIndex;
         }
 
@@ -345,7 +346,7 @@ namespace Readearth.GrADSBinary
         /// <param name="timeIndex">时间维索引</param>
         /// <param name="level">z维索引</param>
         /// <returns>开始位置</returns>       
-        public int GetBinaryBlockIndex(string strVarName, int timeIndex,int level)
+        public int GetBinaryBlockIndex(string strVarName, int timeIndex, int level)
         {
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
@@ -356,14 +357,14 @@ namespace Readearth.GrADSBinary
                 {
                     if (level >= pVariableClass.LevelCount)
                         throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
-                    pBinaryBlockIndex += level * BaseBlockSize;
+                    pBinaryBlockIndex += level * BaseArraySize;
                     break;
                 }
                 else
-                    pBinaryBlockIndex += pVariableClass.LevelCount * BaseBlockSize;
+                    pBinaryBlockIndex += pVariableClass.LevelCount * BaseArraySize;
             }
 
-            return pBinaryBlockIndex+TimeBlockSize*timeIndex;
+            return pBinaryBlockIndex + TimePageSize * timeIndex;
         }
         /// <summary>
         /// 获取目标变量的开始位置。
@@ -372,7 +373,7 @@ namespace Readearth.GrADSBinary
         /// <param name="timeIndex">时间维索引</param>
         /// <param name="level">z维索引</param>
         /// <returns>开始位置</returns>
-        public int GetBinaryBlockIndex(int varIndex,int timeIndex, int level)
+        public int GetBinaryBlockIndex(int varIndex, int timeIndex, int level)
         {
 
             int pBinaryBlockIndex = 0;
@@ -380,13 +381,13 @@ namespace Readearth.GrADSBinary
             for (int i = 0; i < varIndex; i++)
             {
                 pVariableClass = _VARS.VARS[i];
-                pBinaryBlockIndex += pVariableClass.LevelCount * BaseBlockSize;
+                pBinaryBlockIndex += pVariableClass.LevelCount * BaseArraySize;
             }
             pVariableClass = _VARS.VARS[varIndex];
             if (level >= pVariableClass.LevelCount)
                 throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
-            pBinaryBlockIndex += level * BaseBlockSize;
-            return pBinaryBlockIndex+ timeIndex*TimeBlockSize;
+            pBinaryBlockIndex += level * BaseArraySize;
+            return pBinaryBlockIndex + timeIndex * TimePageSize;
         }
         #endregion
 
@@ -522,11 +523,11 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 控制处理数据文件方式的变量。替换了旧版的FORMAT记录。
         /// </summary>
-        public string Options
+        public IOptions Options
         {
             get
             {
-                if (string.IsNullOrEmpty(_Options))
+                if (_Options == null)
                     throw new ArgumentNullException("Options", "Options参数为空。");
                 else
                     return _Options;
@@ -585,11 +586,11 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 基础数据块大小（bytes）
         /// </summary>
-        public int BaseBlockSize
+        public int BaseArraySize
         {
             get
             {
-                return XSize*YSize *4;
+                return XSize * YSize * 4;
             }
         }
 
@@ -597,11 +598,11 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 时次基础数据块大小（bytes）
         /// </summary>
-        public int TimeBlockSize
+        public int TimePageSize
         {
             get
             {
-                return _VARS.BlocksCount* BaseBlockSize;
+                return _VARS.BlocksCount * BaseArraySize;
             }
         }
 
@@ -624,5 +625,5 @@ namespace Readearth.GrADSBinary
         }
         #endregion
     }
-    
+
 }
