@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EC27F958-4756-4B36-B439-A6BDC769390A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Readearth.GrADSBinary</RootNamespace>
+    <AssemblyName>Readearth.GrADSBinary</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Readearth.GrADSBinary.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Projection">
+      <HintPath>..\NAQPMS源_文件解析站点入库(单点预报)\DLL\Projection.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class\BinaryDataClass.cs" />
+    <Compile Include="DEF\Class\FileMode.cs" />
+    <Compile Include="DEF\Interface\ILCCR_PDEF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Interface\ILCC_PDEF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Interface\IPDEF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Interface\ITDEF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Interface\IVARS.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Interface\IXDEF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Interface\IYDEF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Interface\IZDEF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DEF\Class\LCCR_PDEFClass.cs" />
+    <Compile Include="DEF\Class\LCC_PDEFClass.cs" />
+    <Compile Include="DEF\Class\PDEFClass.cs" />
+    <Compile Include="DEF\Class\DEF_Enum.cs" />
+    <Compile Include="Class\ArgumentUndealException.cs" />
+    <Compile Include="DEF\Class\TDEFClass.cs" />
+    <Compile Include="DEF\Class\VariableClass.cs" />
+    <Compile Include="DEF\Class\VARSClass.cs" />
+    <Compile Include="DEF\Class\XDEFClass.cs" />
+    <Compile Include="DEF\Class\YDEFClass.cs" />
+    <Compile Include="DEF\Class\ZDEFClass.cs" />
+    <Compile Include="Class\GrADSEventArgs.cs" />
+    <Compile Include="Interface\IBinaryData.cs" />
+    <Compile Include="Interface\ICTLInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Class\CTLInfoClass.cs" />
+    <Compile Include="Class\Strut.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DLL\Projection.dll" />
+    <Content Include="使用说明.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readearth.GrADSBinary.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
