@@ -7,7 +7,7 @@ namespace Readearth.GrADSBinary.DEF
     /// <summary>
     /// 
     /// </summary>
-    public class PDEFClass : Object, IPDEF, ILCC_PDEF, ILCCR_PDEF
+    public class PDEFClass : Object, IPDEF//, ILCC_PDEF, ILCCR_PDEF
     {
         /// <summary>
         /// 构造函数
@@ -36,7 +36,10 @@ namespace Readearth.GrADSBinary.DEF
             }
         }
         #region 成员变量
-        Pro_Type _Pro_Type;
+        /// <summary>
+        /// PDEF 类型
+        /// </summary>
+       protected Pro_Type _Pro_Type;
         /// <summary>
         /// 
         /// </summary>
@@ -59,136 +62,136 @@ namespace Readearth.GrADSBinary.DEF
             }
         }
 
-        /// <summary>
-        /// The size of the native grid in the x direction
-        /// </summary>
-        public int ISize
-        {
-            get
-            {
-                return _iSize;
-            }
-        }
+        ///// <summary>
+        ///// The size of the native grid in the x direction
+        ///// </summary>
+        //public int ISize
+        //{
+        //    get
+        //    {
+        //        return _iSize;
+        //    }
+        //}
 
-        /// <summary>
-        /// The size of the native grid in the y direction
-        /// </summary>
-        public int JSize
-        {
-            get
-            {
-                return _jSize;
-            }
-        }
+        ///// <summary>
+        ///// The size of the native grid in the y direction
+        ///// </summary>
+        //public int JSize
+        //{
+        //    get
+        //    {
+        //        return _jSize;
+        //    }
+        //}
 
-        /// <summary>
-        /// reference latitude
-        /// </summary>
-        public double LatRef
-        {
-            get
-            {
-                return _latref;
-            }
-        }
+        ///// <summary>
+        ///// reference latitude
+        ///// </summary>
+        //public double LatRef
+        //{
+        //    get
+        //    {
+        //        return _latref;
+        //    }
+        //}
 
-        /// <summary>
-        /// reference longitude (in degrees, E is positive, W is negative)
-        /// </summary>
-        public double LonRef
-        {
-            get
-            {
-                return _lonref;
-            }
-        }
+        ///// <summary>
+        ///// reference longitude (in degrees, E is positive, W is negative)
+        ///// </summary>
+        //public double LonRef
+        //{
+        //    get
+        //    {
+        //        return _lonref;
+        //    }
+        //}
 
-        /// <summary>
-        /// i of ref point
-        /// </summary>
-        public double IRef
-        {
-            get
-            {
-                return _iref;
-            }
-        }
+        ///// <summary>
+        ///// i of ref point
+        ///// </summary>
+        //public double IRef
+        //{
+        //    get
+        //    {
+        //        return _iref;
+        //    }
+        //}
 
-        /// <summary>
-        /// j of ref point
-        /// </summary>
-        public double JRef
-        {
-            get
-            {
-                return _jref;
-            }
-        }
+        ///// <summary>
+        ///// j of ref point
+        ///// </summary>
+        //public double JRef
+        //{
+        //    get
+        //    {
+        //        return _jref;
+        //    }
+        //}
 
-        /// <summary>
-        /// S true lat
-        /// </summary>
-        public double Struelat
-        {
-            get
-            {
-                return _Struelat;
-            }
-        }
+        ///// <summary>
+        ///// S true lat
+        ///// </summary>
+        //public double Struelat
+        //{
+        //    get
+        //    {
+        //        return _Struelat;
+        //    }
+        //}
 
-        /// <summary>
-        /// N true lat
-        /// </summary>
-        public double Ntruelat
-        {
-            get
-            {
-                return _Ntruelat;
-            }
-        }
+        ///// <summary>
+        ///// N true lat
+        ///// </summary>
+        //public double Ntruelat
+        //{
+        //    get
+        //    {
+        //        return _Ntruelat;
+        //    }
+        //}
 
-        /// <summary>
-        /// standard longitude
-        /// </summary>
-        public double SLon
-        {
-            get
-            {
-                return _slon;
-            }
-        }
+        ///// <summary>
+        ///// standard longitude
+        ///// </summary>
+        //public double SLon
+        //{
+        //    get
+        //    {
+        //        return _slon;
+        //    }
+        //}
 
-        /// <summary>
-        /// grid X increment in meters
-        /// </summary>
-        public double DX
-        {
-            get
-            {
-                return _dx;
-            }
-        }
+        ///// <summary>
+        ///// grid X increment in meters
+        ///// </summary>
+        //public double DX
+        //{
+        //    get
+        //    {
+        //        return _dx;
+        //    }
+        //}
 
-        /// <summary>
-        /// grid Y increment in meters
-        /// </summary>
-        public double DY
-        {
-            get
-            {
-                return _dy;
-            }
-        }
-        /// <summary>
-        /// 单层数据的字节数
-        /// </summary>
-        public long BlockSize
-        {
-            get
-            {
-                return _iSize * _jSize * 4;
-            }
-        }
+        ///// <summary>
+        ///// grid Y increment in meters
+        ///// </summary>
+        //public double DY
+        //{
+        //    get
+        //    {
+        //        return _dy;
+        //    }
+        //}
+        ///// <summary>
+        ///// 单层数据的字节数
+        ///// </summary>
+        //public long BlockSize
+        //{
+        //    get
+        //    {
+        //        return _iSize * _jSize * 4;
+        //    }
+        //}
         #endregion
 
     }

@@ -348,14 +348,87 @@ namespace Readearth.GrADSBinary
                 //float[,] data = ReadData(VarName, timeIndex, Level);
                 StringBuilder sb = new StringBuilder();
                 #region ASC 头文件
-                int col = CTLInfo.PDEF.ISize;
-                int row = CTLInfo.PDEF.JSize;
-                float cellSize = (float)CTLInfo.PDEF.DX;
+                int col = -1, row=-1;
+                float xllcorner = -1.0f, yllcorner = -1.0f, cellSize = -1.0f;
+                if (CTLInfo.PDEF.Pro_Type == Pro_Type.LCC)
+                {
+                    col = ((ILCC_PDEF)CTLInfo.PDEF).ISize;
+                    row = ((ILCC_PDEF)CTLInfo.PDEF).JSize;
 
-                LamProjection lp = new LamProjection(new VectorPointXY(CTLInfo.PDEF.SLon, CTLInfo.Orgin_Lat), CTLInfo.PDEF.Struelat, CTLInfo.PDEF.Ntruelat, GeoRefEllipsoid.WGS_84);
-                VectorPointXY xyRef = lp.GeoToProj(new VectorPointXY(CTLInfo.PDEF.LonRef, CTLInfo.PDEF.LatRef));
-                float xllcorner = (float)(xyRef.X - CTLInfo.PDEF.IRef * CTLInfo.PDEF.DX);
-                float yllcorner = (float)(xyRef.Y - CTLInfo.PDEF.JRef * CTLInfo.PDEF.DY);
+                    cellSize = (float)((ILCC_PDEF)CTLInfo.PDEF).DX;
+
+                    LamProjection lp = new LamProjection(new VectorPointXY(((ILCC_PDEF)CTLInfo.PDEF).SLon, CTLInfo.Orgin_Lat), ((ILCC_PDEF)CTLInfo.PDEF).Struelat, ((ILCC_PDEF)CTLInfo.PDEF).Ntruelat, GeoRefEllipsoid.WGS_84);
+                    VectorPointXY xyRef = lp.GeoToProj(new VectorPointXY(((ILCC_PDEF)CTLInfo.PDEF).LonRef, ((ILCC_PDEF)CTLInfo.PDEF).LatRef));
+                    xllcorner = (float)(xyRef.X - ((ILCC_PDEF)CTLInfo.PDEF).IRef * ((ILCC_PDEF)CTLInfo.PDEF).DX);
+                    yllcorner = (float)(xyRef.Y - ((ILCC_PDEF)CTLInfo.PDEF).JRef * ((ILCC_PDEF)CTLInfo.PDEF).DY);
+
+                    #region PRJ
+                    if (isPrjWith)
+                    {
+                        sb.AppendLine("Projection    LAMBERT");
+                        sb.AppendLine("Datum         WGS84");
+                        sb.AppendLine("Spheroid      WGS84");
+                        sb.AppendLine("Units         METERS");
+                        sb.AppendLine("Zunits        NO");
+                        sb.AppendLine("Xshift        0.0");
+                        sb.AppendLine("Yshift        0.0");
+                        sb.AppendLine("Parameters");
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* 1st standard parallel", ((ILCC_PDEF)CTLInfo.PDEF).Ntruelat));
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* 2nd standard parallel", ((ILCC_PDEF)CTLInfo.PDEF).Struelat));
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* central meridian", ((ILCC_PDEF)CTLInfo.PDEF).SLon));
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* latitude of projection's origin", ((ILCC_PDEF)CTLInfo.PDEF).LatRef));
+                        sb.AppendLine("0.0 /* false easting (meters)");
+                        sb.AppendLine("0.0 /* false northing (meters)");
+
+                        StreamWriter swPrj = new StreamWriter(outputPath.Replace(".asc", ".prj"));
+                        swPrj.Write(sb.ToString());
+                        swPrj.Flush();
+                        sb.Length = 0;
+                        swPrj.Close();
+                        swPrj.Dispose();
+                    }
+                    #endregion
+                }
+                else if (CTLInfo.PDEF.Pro_Type == Pro_Type.LCCR)
+                {
+                    col = ((ILCCR_PDEF)CTLInfo.PDEF).ISize;
+                    row = ((ILCCR_PDEF)CTLInfo.PDEF).JSize;
+
+                    cellSize = (float)((ILCCR_PDEF)CTLInfo.PDEF).DX;
+
+                    LamProjection lp = new LamProjection(new VectorPointXY(((ILCCR_PDEF)CTLInfo.PDEF).SLon, CTLInfo.Orgin_Lat), ((ILCCR_PDEF)CTLInfo.PDEF).Struelat, ((ILCCR_PDEF)CTLInfo.PDEF).Ntruelat, GeoRefEllipsoid.WGS_84);
+                    VectorPointXY xyRef = lp.GeoToProj(new VectorPointXY(((ILCCR_PDEF)CTLInfo.PDEF).LonRef, ((ILCCR_PDEF)CTLInfo.PDEF).LatRef));
+                    xllcorner = (float)(xyRef.X - ((ILCCR_PDEF)CTLInfo.PDEF).IRef * ((ILCCR_PDEF)CTLInfo.PDEF).DX);
+                    yllcorner = (float)(xyRef.Y - ((ILCCR_PDEF)CTLInfo.PDEF).JRef * ((ILCCR_PDEF)CTLInfo.PDEF).DY);
+                    
+                    #region PRJ
+                    if (isPrjWith)
+                    {
+                        sb.AppendLine("Projection    LAMBERT");
+                        sb.AppendLine("Datum         WGS84");
+                        sb.AppendLine("Spheroid      WGS84");
+                        sb.AppendLine("Units         METERS");
+                        sb.AppendLine("Zunits        NO");
+                        sb.AppendLine("Xshift        0.0");
+                        sb.AppendLine("Yshift        0.0");
+                        sb.AppendLine("Parameters");
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* 1st standard parallel", ((ILCCR_PDEF)CTLInfo.PDEF).Ntruelat));
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* 2nd standard parallel", ((ILCCR_PDEF)CTLInfo.PDEF).Struelat));
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* central meridian", ((ILCCR_PDEF)CTLInfo.PDEF).SLon));
+                        sb.AppendLine(string.Format("  {0}  0  0.0 /* latitude of projection's origin", ((ILCCR_PDEF)CTLInfo.PDEF).LatRef));
+                        sb.AppendLine("0.0 /* false easting (meters)");
+                        sb.AppendLine("0.0 /* false northing (meters)");
+
+                        StreamWriter swPrj = new StreamWriter(outputPath.Replace(".asc", ".prj"));
+                        swPrj.Write(sb.ToString());
+                        swPrj.Flush();
+                        sb.Length = 0;
+                        swPrj.Close();
+                        swPrj.Dispose();
+                    }
+                    #endregion
+                }
+
 
                 sb.AppendLine("ncols         " + col);
                 sb.AppendLine("nrows         " + row);
@@ -368,7 +441,7 @@ namespace Readearth.GrADSBinary
                 #region ASC
                 for (int iii = data.GetLength(0) - 1; iii >= 0; iii--)//逐列
                 {
-                    string[] rowDatas = new string[CTLInfo.PDEF.ISize];
+                    string[] rowDatas = new string[col];
                     for (int jjj = 0; jjj < data.GetLength(1); jjj++)//逐行
                     {
                         float var = data[iii, jjj];
@@ -387,32 +460,7 @@ namespace Readearth.GrADSBinary
                 sw.Dispose();
                 #endregion
 
-                #region PRJ
-                if (isPrjWith)
-                {  
-                    sb.AppendLine("Projection    LAMBERT");
-                    sb.AppendLine("Datum         WGS84");
-                    sb.AppendLine("Spheroid      WGS84");
-                    sb.AppendLine("Units         METERS");
-                    sb.AppendLine("Zunits        NO");
-                    sb.AppendLine("Xshift        0.0");
-                    sb.AppendLine("Yshift        0.0");
-                    sb.AppendLine("Parameters");
-                    sb.AppendLine(string.Format("  {0}  0  0.0 /* 1st standard parallel", CTLInfo.PDEF.Ntruelat));
-                    sb.AppendLine(string.Format("  {0}  0  0.0 /* 2nd standard parallel", CTLInfo.PDEF.Struelat));
-                    sb.AppendLine(string.Format("  {0}  0  0.0 /* central meridian", CTLInfo.PDEF.SLon));
-                    sb.AppendLine(string.Format("  {0}  0  0.0 /* latitude of projection's origin", CTLInfo.PDEF.LatRef));
-                    sb.AppendLine("0.0 /* false easting (meters)");
-                    sb.AppendLine("0.0 /* false northing (meters)");
-
-                    sw = new StreamWriter(outputPath.Replace(".asc", ".prj"));
-                    sw.Write(sb.ToString());
-                    sw.Flush();
-                    sb.Length = 0;
-                    sw.Close();
-                    sw.Dispose();                   
-                }
-                #endregion
+               
                 res = true;
             }
             catch (Exception ex)

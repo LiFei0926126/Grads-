@@ -544,12 +544,9 @@ namespace Readearth.GrADSBinary
                     switch (this._PDEF.Pro_Type)
                     {
                         case Pro_Type.LCC:
-                            LCC_PDEFClass pLCC_PDEFClass = _PDEF as LCC_PDEFClass;
-
-                            return pLCC_PDEFClass.ISize;
+                            return ((ILCC_PDEF)_PDEF).ISize;
                         case Pro_Type.LCCR:
-                            LCCR_PDEFClass pLCCR_PDEFClass = _PDEF as LCCR_PDEFClass;
-                            return pLCCR_PDEFClass.ISize;
+                            return ((ILCCR_PDEF)_PDEF).ISize;
                         default:
                             throw new ArgumentUndealException("参数错误：未对该投影类型进行处理。", new ArgumentException("参数错误：未处理该参数。", "this._PDEF.Pro_Type"));
                     }
@@ -570,12 +567,9 @@ namespace Readearth.GrADSBinary
                     switch (this._PDEF.Pro_Type)
                     {
                         case Pro_Type.LCC:
-                            LCC_PDEFClass pLCC_PDEFClass = _PDEF as LCC_PDEFClass;
-
-                            return pLCC_PDEFClass.JSize;
+                            return ((ILCC_PDEF)_PDEF).JSize;
                         case Pro_Type.LCCR:
-                            LCCR_PDEFClass pLCCR_PDEFClass = _PDEF as LCCR_PDEFClass;
-                            return pLCCR_PDEFClass.JSize;
+                            return ((ILCCR_PDEF)_PDEF).JSize;
                         default:
                             throw new ArgumentUndealException("参数错误：未对该投影类型进行处理。", new ArgumentException("参数错误：未处理该参数。", "this._PDEF.Pro_Type"));
                     }
@@ -618,7 +612,18 @@ namespace Readearth.GrADSBinary
             get
             {
                 if (Double.IsNaN(_Orgin_Lat))
-                    return this.PDEF.LatRef;
+                {
+                    switch (this.PDEF.Pro_Type)
+                    {
+                        case Pro_Type.LCC:
+                            return ((ILCC_PDEF)PDEF).LatRef;
+                        case Pro_Type.LCCR:
+                            return ((ILCCR_PDEF)PDEF).LatRef;
+                        default:
+                            throw new ArgumentUndealException("参数错误：未对该投影类型进行处理。", new ArgumentException("参数错误：未处理该参数。", "this._PDEF.Pro_Type"));
+                    }
+                }
+                    
                 else
                     return _Orgin_Lat;
             }

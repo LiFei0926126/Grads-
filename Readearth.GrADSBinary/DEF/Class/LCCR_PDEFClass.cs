@@ -35,7 +35,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// The size of the native grid in the x direction
         /// </summary>
-        public new int ISize
+       int ILCCR_PDEF.ISize
         {
             get
             {
@@ -46,7 +46,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// The size of the native grid in the y direction
         /// </summary>
-        public new int JSize
+        int ILCCR_PDEF.JSize
         {
             get
             {
@@ -57,7 +57,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// reference latitude
         /// </summary>
-        public double LatRef
+        double ILCCR_PDEF.LatRef
         {
             get
             {
@@ -68,7 +68,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// reference longitude (in degrees, E is positive, W is negative)
         /// </summary>
-        public double LonRef
+        double ILCCR_PDEF.LonRef
         {
             get
             {
@@ -79,7 +79,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// i of ref point
         /// </summary>
-        public double IRef
+        double ILCCR_PDEF.IRef
         {
             get
             {
@@ -90,7 +90,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// j of ref point
         /// </summary>
-        public double JRef
+        double ILCCR_PDEF.JRef
         {
             get
             {
@@ -101,7 +101,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// S true lat
         /// </summary>
-        public double Struelat
+        double ILCCR_PDEF.Struelat
         {
             get
             {
@@ -112,7 +112,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// N true lat
         /// </summary>
-        public double Ntruelat
+        double ILCCR_PDEF.Ntruelat
         {
             get
             {
@@ -123,7 +123,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// standard longitude
         /// </summary>
-        public double SLon
+        double ILCCR_PDEF.SLon
         {
             get
             {
@@ -134,7 +134,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// grid X increment in meters
         /// </summary>
-        public double DX
+        double ILCCR_PDEF.DX
         {
             get
             {
@@ -145,7 +145,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// grid Y increment in meters
         /// </summary>
-        public double DY
+        double ILCCR_PDEF.DY
         {
             get
             {
@@ -155,7 +155,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// 
         /// </summary>
-        public int BlockSize
+        long ILCCR_PDEF.BlockSize
         {
             get
             {
