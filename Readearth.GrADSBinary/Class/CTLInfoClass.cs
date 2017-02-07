@@ -74,7 +74,7 @@ namespace Readearth.GrADSBinary
                     break;
                 case "options":
                     tmp = new List<string>(paras);
-                    tmp.RemoveAt(0);
+                    //tmp.RemoveAt(0);
                     _Options = new Options(string.Join(" ", tmp.ToArray()));
                     break;
                 case "undef":

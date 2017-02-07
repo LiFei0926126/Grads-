@@ -31,16 +31,20 @@ namespace Test
 
 #if Debug2
             //数据文件与CTL描述文件的文件名匹配的数据加载方式
-            IBinaryData pBinaryData = new BinaryDataClass(@"ModelData\201612011200_004_d01.dat");
+            IBinaryData pBinaryData = new BinaryDataClass(@"ModelData\wrfd01_2016-12-01_16.dat");
 #endif
 
             //读取数据
-            float[,] data = pBinaryData.ReadData("slp", 0, 0);
+            //float[,] data = pBinaryData.ReadData("slp", 0, 0);
             //输出ASC
-            bool res = pBinaryData.Export2ASC(data, @"result\slp.asc", true);
+            for (int i = 0; i < pBinaryData.CTLInfo.TDEF.TSize; i++)
+            {
+                bool res = pBinaryData.Export2ASC("slp", i, 0, @"result\slp_"+i.ToString("000")+".asc", true);
+
+                long ms = sw.ElapsedMilliseconds;
+                Console.WriteLine(string.Format("耗时：{0}ms。", ms));
+            }
             sw.Stop();
-           long  ms = sw.ElapsedMilliseconds;
-            Console.WriteLine(string.Format("耗时：{0}ms。", ms));
             Console.ReadKey();
         }
     }
