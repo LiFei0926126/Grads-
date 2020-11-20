@@ -63,13 +63,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DLL\Projection.dll" />
+    <Content Include="DLL\Readearth.GrADSBinary.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Readearth.GrADSBinary\Readearth.GrADSBinary.csproj">
       <Project>{ec27f958-4756-4b36-b439-a6bdc769390a}</Project>
       <Name>Readearth.GrADSBinary</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DLL\Projection.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

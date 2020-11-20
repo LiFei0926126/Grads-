@@ -4,15 +4,16 @@ namespace Readearth.GrADSBinary.DEF
     /// <summary>
     /// 变量集合类
     /// </summary>
-  public  interface IVARS
+    public interface IVars
     {
+
         /// <summary>
         /// 根据变量索引
         /// </summary>
         /// <param name="varIndex"></param>
         /// <param name="BlockSize"></param>
         /// <returns></returns>
-        int GetBinaryBlockIndex(int varIndex, int BlockSize);
+        int GetBinaryBlockIndex(int varIndex , int BlockSize);
         /// <summary>
         /// 
         /// </summary>
@@ -20,14 +21,14 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="BlockSize"></param>
         /// <param name="levelIndex"></param>
         /// <returns></returns>
-        int GetBinaryBlockIndex(int varIndex, int BlockSize, int levelIndex);
+        int GetBinaryBlockIndex(int varIndex , int BlockSize , int levelIndex);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="strVarName"></param>
         /// <param name="BlockSize"></param>
         /// <returns></returns>
-        int GetBinaryBlockIndex(string strVarName, int BlockSize);
+        int GetBinaryBlockIndex(string strVarName , int BlockSize);
         /// <summary>
         /// 
         /// </summary>
@@ -35,7 +36,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="BlockSize"></param>
         /// <param name="level"></param>
         /// <returns></returns>
-        int GetBinaryBlockIndex(string strVarName, int BlockSize, int level);
+        int GetBinaryBlockIndex(string strVarName , int BlockSize , int level);
 
         /// <summary>
         /// 根据变量索引获取变量。
@@ -51,7 +52,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="IgnoreCase">是否忽略大小写。</param>
         /// <returns>返回变量。</returns>
         /// <exception cref="ArgumentException">错误的变量名。</exception>
-        VariableClass GetVariableByName(string strVarName, bool IgnoreCase);
+        VariableClass GetVariableByName(string strVarName , bool IgnoreCase);
 
         /// <summary>
         /// 变量总数。

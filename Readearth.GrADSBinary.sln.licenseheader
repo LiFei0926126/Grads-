@@ -1,0 +1,20 @@
+﻿extensions: .cs
+/**************版本信息**************
+ * 文 件 名:   %FileName%
+ * 描    述: 
+ * 
+ * 版    本：  V1.0
+ * 创 建 者：  %UserName%
+ * 创建时间：  %CreationYear%/%CreationMonth%/%CreationDay% %CreationTime%
+ * ======================================
+ * 历史更新记录
+ * 版本：V          修改时间：         修改人：
+ * 修改内容：
+ * ======================================
+**************版本信息**************/
+extensions: .aspx .ascx
+<%--
+Copyright (c) %CreationYear% Readearth
+--%>
+extensions: .xml .config .xsd
+<!--Copyright (c) 2020 Readearth-->

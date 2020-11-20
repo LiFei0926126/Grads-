@@ -1,53 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Readearth.GrADSBinary.DEF
 {
     /// <summary>
     /// This entry defines the grid point values for the X dimension, or longitude.
     /// </summary>
-    public class XDEFClass : Object,IXDEF
+    public class XDefClass : Object, IXDef
     {
         #region 构造函数
         /// <summary>
-        /// 
+        /// 构造函数
         /// </summary>
         /// <param name="strXDEF"></param>
-        public XDEFClass(string strXDEF)
+        /// <exception cref="ArgumentNullException">参数错误：该参数不能为空。</exception>
+        /// <exception cref="ArgumentNullException">参数错误：该参数不是XDEF描述。</exception>
+        /// <exception cref="ArgumentNullException">参数错误：该参数不是 LINEAR XDEF描述。</exception>
+        /// <exception cref="ArgumentNullException">参数错误：该参数不是 LEVELS XDEF描述。</exception>
+        public XDefClass(string strXDEF)
         {
-            if (string.IsNullOrEmpty(strXDEF))
-                throw new ArgumentNullException("strXDEF", "参数错误：该参数不能为空。");
-            if (!strXDEF.ToUpper().Contains("XDEF"))
-                throw new ArgumentException("参数错误：该参数不是XDEF描述。", "strXDEF",new Exception(strXDEF));
+            if (string.IsNullOrEmpty ( strXDEF ))
+                throw new ArgumentNullException ( "strXDEF" , "参数错误：该参数不能为空。" );
+            if (!strXDEF.ToUpper ( ).Contains ( "XDEF" ))
+                throw new ArgumentException ( "参数错误：该参数不是XDEF描述。" , "strXDEF" , new Exception ( strXDEF ) );
 
-            string[] paras = strXDEF.ToUpper().Split(' ');
+            string[] paras = strXDEF.ToUpper ( ).Split ( ' ' );
 
-            _xnum = int.Parse(paras[1]);
-            _XDEF_Type = (XYZDEF_Type)Enum.Parse(typeof(XYZDEF_Type), paras[2].ToUpper());
+            _xnum = int.Parse ( paras[1] );
+            _XDEF_Type = (Mapping_Type)Enum.Parse ( typeof ( Mapping_Type ) , paras[2].ToUpper ( ) );
 
             switch (_XDEF_Type)
             {
-                case XYZDEF_Type.LINEAR:
+                case Mapping_Type.Linear:
                     if (paras.Length == 5)
                     {
-                        _start = double.Parse(paras[3]);
-                        _increment = double.Parse(paras[4]);
+                        _start = double.Parse ( paras[3] );
+                        _increment = double.Parse ( paras[4] );
                     }
                     else
-                        throw new ArgumentException(strXDEF);
+                        throw new ArgumentException ( "参数错误：该参数不是 LINEAR XDEF描述。" , "strXDEF" , new Exception ( strXDEF ) );
                     break;
-                case XYZDEF_Type.LEVELS:
+                case Mapping_Type.Levels:
                     if (paras.Length >= 4)
                     {
-                        _LEVELS = new List<double>();
-                        for (int i = 3; i < paras.Length; i++)
+                        _LEVELS = new List<double> ( );
+                        for (int i = 3 ; i < paras.Length ; i++)
                         {
-                            _LEVELS.Add(double.Parse(paras[i]));
+                            _LEVELS.Add ( double.Parse ( paras[i] ) );
                         }
                     }
                     else
-                        throw new ArgumentException(strXDEF);
+                        throw new ArgumentException ( "参数错误：该参数不是 LEVELS XDEF描述。" , "strXDEF" , new Exception ( strXDEF ) );
                     break;
             }
 
@@ -55,15 +58,15 @@ namespace Readearth.GrADSBinary.DEF
         #endregion
 
         #region 成员变量
-        int _xnum;
-        XYZDEF_Type _XDEF_Type;
-        double _start = double.NaN, _increment = double.NaN;
-        List<double> _LEVELS = null;
+        private int _xnum;
+        private Mapping_Type _XDEF_Type;
+        private double _start = double.NaN, _increment = double.NaN;
+        private List<double> _LEVELS = null;
         #endregion
 
         #region 属性
         /// <summary>
-        /// 
+        /// XSize
         /// </summary>
         public int XSize
         {
@@ -72,55 +75,49 @@ namespace Readearth.GrADSBinary.DEF
                 if (_xnum >= 1)
                     return _xnum;
                 else
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException ( );
             }
         }
         /// <summary>
-        /// 
+        /// XDEFType
         /// </summary>
-        public XYZDEF_Type XDEFType
-        {
-            get
-            {
-                return _XDEF_Type;
-            }
-        }
+        public Mapping_Type MappingType => _XDEF_Type;
         /// <summary>
-        /// 
+        /// LEVELS
         /// </summary>
-        public List<double> LEVELS
+        public List<double> Levels
         {
             get
             {
                 if (_LEVELS == null)
-                    throw new ArgumentUndealException();
+                    throw new ArgumentUndealException ( );
                 else
                     return _LEVELS;
             }
         }
         /// <summary>
-        /// 
+        /// STRAT
         /// </summary>
-        public double STRAT
+        public double Strat
         {
             get
             {
                 if (_start == double.NaN)
-                    throw new ArgumentUndealException();
+                    throw new ArgumentUndealException ( );
                 else
                     return _start;
             }
         }
 
         /// <summary>
-        /// 
+        /// INCREMENT
         /// </summary>
-        public double INCREMENT
+        public double Increment
         {
             get
             {
                 if (_increment == double.NaN)
-                    throw new ArgumentUndealException();
+                    throw new ArgumentUndealException ( );
                 else
                     return _increment;
             }

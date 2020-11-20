@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Readearth.GrADSBinary.DEF
+﻿namespace Readearth.GrADSBinary.DEF
 {
     /// <summary>
     ///投影类型 
@@ -11,10 +7,12 @@ namespace Readearth.GrADSBinary.DEF
     {
         /// <summary>
         /// 北半球极坐标投影
+        /// (该版本类库暂不支持！)
         /// </summary>
         NPS = 1,
         /// <summary>
         /// 南半球极坐标投影
+        /// (该版本类库暂不支持！)
         /// </summary>
         SPS = 2,
         /// <summary>
@@ -27,6 +25,7 @@ namespace Readearth.GrADSBinary.DEF
         LCC = 8,
         /// <summary>
         /// 埃塔模型本地网格
+        /// (该版本类库暂不支持！)
         /// </summary>
         ETA_U = 16,
         /// <summary>
@@ -35,31 +34,32 @@ namespace Readearth.GrADSBinary.DEF
         PSE = 32,
         /// <summary>
         /// CSU公羊模型使用一个斜极立体投影。风旋转并没有实现! ! !只使用标量字段。
+        /// (该版本类库暂不支持！)
         /// </summary>
         OPS = 64,
         /// <summary>
-        /// 
+        /// (该版本类库暂不支持！)
         /// </summary>
         ROTLL = 128
     }
     /// <summary>
-    /// XYZ-DEF类型
+    /// 映射类型
     /// </summary>
-    public enum XYZDEF_Type
+    public enum Mapping_Type
     {
         /// <summary>
         /// 线性映射
         /// </summary>
-        LINEAR = 1,
+        Linear = 1,
         /// <summary>
-        /// 纬度分别指定
+        /// 分别指定
         /// </summary>
-        LEVELS = 2
+        Levels = 2
     }
     /// <summary>
     /// 时间单位
     /// </summary>
-    public enum TDEF_Unit
+    public enum TDef_Unit
     {
         /// <summary>
         /// 分钟
@@ -81,5 +81,21 @@ namespace Readearth.GrADSBinary.DEF
         /// 年
         /// </summary>
         YR
+    }
+
+    /// <summary>
+    /// EDef集合成员定义类型
+    /// </summary>
+    public enum EDef_Type
+    {
+        /// <summary>
+        /// 枚举名字
+        /// </summary>
+        Names = 1,
+
+        /// <summary>
+        /// 扩展形式
+        /// </summary>
+        Extend = 2
     }
 }

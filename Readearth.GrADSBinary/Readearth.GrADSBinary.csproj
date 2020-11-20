@@ -47,42 +47,46 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\BinaryDataClass.cs" />
+    <Compile Include="DEF\Class\EDefClass.cs" />
     <Compile Include="DEF\Class\FileMode.cs" />
+    <Compile Include="DEF\Interface\IEDef.cs" />
+    <Compile Include="DEF\Interface\INames.cs" />
     <Compile Include="DEF\Interface\ILCCR_PDEF.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Interface\ILCC_PDEF.cs">
+    <Compile Include="DEF\Interface\ILcc_PDef.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Interface\IPDEF.cs">
+    <Compile Include="DEF\Interface\ILevels.cs" />
+    <Compile Include="DEF\Interface\IILinear.cs" />
+    <Compile Include="DEF\Interface\IMapping.cs" />
+    <Compile Include="DEF\Interface\IPDef.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Interface\ITDEF.cs">
+    <Compile Include="DEF\Interface\ITDef.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Interface\IVARS.cs">
+    <Compile Include="DEF\Interface\IVars.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Interface\IXDEF.cs">
+    <Compile Include="DEF\Interface\IXDef.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Interface\IYDEF.cs">
+    <Compile Include="DEF\Interface\IYDef.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Interface\IZDEF.cs">
+    <Compile Include="DEF\Interface\IZDef.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DEF\Class\LCCR_PDEFClass.cs" />
-    <Compile Include="DEF\Class\LCC_PDEFClass.cs" />
-    <Compile Include="DEF\Class\PDEFClass.cs" />
+    <Compile Include="DEF\Class\PDefClass.cs" />
     <Compile Include="DEF\Class\DEF_Enum.cs" />
     <Compile Include="Class\ArgumentUndealException.cs" />
-    <Compile Include="DEF\Class\TDEFClass.cs" />
+    <Compile Include="DEF\Class\TDefClass.cs" />
     <Compile Include="DEF\Class\VariableClass.cs" />
-    <Compile Include="DEF\Class\VARSClass.cs" />
-    <Compile Include="DEF\Class\XDEFClass.cs" />
-    <Compile Include="DEF\Class\YDEFClass.cs" />
-    <Compile Include="DEF\Class\ZDEFClass.cs" />
+    <Compile Include="DEF\Class\VarsClass.cs" />
+    <Compile Include="DEF\Class\XDefClass.cs" />
+    <Compile Include="DEF\Class\YDefClass.cs" />
+    <Compile Include="DEF\Class\ZDefClass.cs" />
     <Compile Include="Class\GrADSEventArgs.cs" />
     <Compile Include="DEF\Class\Options.cs" />
     <Compile Include="DEF\Interface\IOptions.cs" />

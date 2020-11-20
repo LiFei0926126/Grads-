@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Readearth.GrADSBinary.DEF
@@ -8,51 +7,57 @@ namespace Readearth.GrADSBinary.DEF
     /// <summary>
     /// 变量集合类
     /// </summary>
-    public class VARSClass:Object,IVARS
+    public class VarsClass : object, IVars
     {
+        /// <summary>
+        /// 开始标记的正则表达式
+        /// </summary>
+        public static string StrRegexBegin = "^VARS";
+
+        /// <summary>
+        /// 结束标记的正则表达式
+        /// </summary>
+        public static string StrRegexEnd = "^ENDVARS";
+
         #region 构造函数
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="strVARS">描述文本</param>
+        /// <param name="strVARS">变量描述文本</param>
         /// <exception cref="ArgumentNullException">参数为空异常。</exception>
         /// <exception cref="ArgumentException">参数不是VARS描述。</exception>
-        /// <exception cref="ArgumentUndealException">参数没有以"ENDVARS"结尾。</exception>
         /// <exception cref="ArgumentUndealException">未能正确解析变量。</exception>
-        public VARSClass(string strVARS)
+        public VarsClass(string strVARS)
         {
-            if (string.IsNullOrEmpty(strVARS))
-                throw new ArgumentNullException("strVARS", "参数错误：该参数不能为空。");
-            if (!strVARS.ToUpper().Contains("VARS"))
-                throw new ArgumentException("参数错误：该参数不是VARS描述。", "strVARS", new Exception(strVARS));
+            if (string.IsNullOrEmpty ( strVARS ))
+                throw new ArgumentNullException ( "strVARS" , "参数错误：该参数不能为空。" );
+            if (!strVARS.ToUpper ( ).Contains ( "VARS" ))
+                throw new ArgumentException ( "参数错误：该参数不是VARS描述。" , "strVARS" , new Exception ( strVARS ) );
 
-            string[] paras = strVARS.Split(new string[] {"\r\n","\n" }, StringSplitOptions.None);
-            List<string> listParas = new List<string>(paras);
+            string[] paras = strVARS.Split ( new string[] { "\r\n" , "\n" } , StringSplitOptions.None );
+            List<string> listParas = new List<string> ( paras );
 
-            while (string.IsNullOrEmpty(listParas[listParas.Count - 1]))
-                listParas.RemoveAt(listParas.Count - 1);
+            while (string.IsNullOrEmpty ( listParas[listParas.Count - 1] ))
+                listParas.RemoveAt ( listParas.Count - 1 );
 
-            if (listParas[listParas.Count - 1] != "ENDVARS")
-                throw new ArgumentUndealException("参数错误：参数没有以\"ENDVARS\"结尾", "strVARS");
+            _vnum = int.Parse ( Regex.Split ( listParas[0] , "\\s+" )[1] );
 
-            _vnum = int.Parse(Regex.Split(listParas[0],"\\s+")[1]);
-
-            _vars = new List<VariableClass>();
-            for (int i = 1; i < listParas.Count-1; i++)
+            _vars = new List<VariableClass> ( );
+            for (int i = 1 ; i < listParas.Count - 1 ; i++)
             {
-                _vars.Add(new VariableClass(listParas[i],i-1));
+                _vars.Add ( new VariableClass ( listParas[i] , i - 1 ) );
             }
 
             if (_vnum != _vars.Count)
-                throw new ArgumentUndealException("参数错误：未能正确解析变量。");
+                throw new ArgumentUndealException ( "参数错误：未能正确解析变量。" );
 
         }
         #endregion
 
         #region 成员变量
 
-        int _vnum;
-        List<VariableClass> _vars = null;
+        private int _vnum;
+        private List<VariableClass> _vars = null;
         #endregion
 
         #region 属性
@@ -64,7 +69,7 @@ namespace Readearth.GrADSBinary.DEF
             get
             {
                 if (_vars == null)
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException ( );
                 else
                     return _vars;
             }
@@ -78,7 +83,7 @@ namespace Readearth.GrADSBinary.DEF
             get
             {
                 if (_vnum == int.MinValue)
-                    throw new ArgumentException();
+                    throw new ArgumentException ( );
                 else
                     return _vnum;
             }
@@ -92,11 +97,11 @@ namespace Readearth.GrADSBinary.DEF
             get
             {
                 if (_vars == null)
-                    throw new Exception("请加载正确的CTL文件。");
+                    throw new Exception ( "请加载正确的CTL文件。" );
                 else
                 {
                     int _count = 0;
-                    for (int i = 0; i < _vars.Count; i++)
+                    for (int i = 0 ; i < _vars.Count ; i++)
                     {
                         VariableClass var = _vars[i];
                         _count += var.LevelCount;
@@ -115,21 +120,21 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="IgnoreCase">是否忽略大小写。</param>
         /// <returns>返回变量。</returns>
         /// <exception cref="ArgumentException">错误的变量名。</exception>
-        public VariableClass GetVariableByName(string strVarName,bool IgnoreCase)
+        public VariableClass GetVariableByName(string strVarName , bool IgnoreCase)
         {
             VariableClass pVariableClass = null;
             if (IgnoreCase)
             {
-                for (int i = 0; i < _vars.Count; i++)
+                for (int i = 0 ; i < _vars.Count ; i++)
                 {
                     pVariableClass = _vars[i];
-                    if (pVariableClass.VarName.ToUpper() == strVarName.ToUpper())
+                    if (pVariableClass.VarName.ToUpper ( ) == strVarName.ToUpper ( ))
                         break;
                 }
             }
             else
             {
-                for (int i = 0; i < _vars.Count; i++)
+                for (int i = 0 ; i < _vars.Count ; i++)
                 {
                     pVariableClass = _vars[i];
                     if (pVariableClass.VarName == strVarName)
@@ -137,7 +142,7 @@ namespace Readearth.GrADSBinary.DEF
                 }
             }
             if (pVariableClass == null)
-                throw new ArgumentException("参数错误：错误的变量名。");
+                throw new ArgumentException ( "参数错误：错误的变量名。" );
             else
                 return pVariableClass;
         }
@@ -149,7 +154,7 @@ namespace Readearth.GrADSBinary.DEF
         public VariableClass GetVariableByIndex(int varIndex)
         {
             if (_vars.Count <= 0)
-                throw new ArgumentException("参数错误：错误的变量名。");
+                throw new ArgumentException ( "参数错误：错误的变量名。" );
             else
                 return _vars[varIndex];
         }
@@ -159,10 +164,10 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="strVarName">变量名</param>
         /// <param name="BlockSize">基础数据块大小</param>
         /// <returns></returns>
-        public int GetBinaryBlockIndex(string strVarName,int BlockSize)
+        public int GetBinaryBlockIndex(string strVarName , int BlockSize)
         {
             int pBinaryBlockIndex = 0;
-            for (int i = 0; i < _vars.Count; i++)
+            for (int i = 0 ; i < _vars.Count ; i++)
             {
                 VariableClass pVariableClass = _vars[i];
                 if (pVariableClass.VarName == strVarName)
@@ -178,11 +183,11 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="varIndex"></param>
         /// <param name="BlockSize"></param>
         /// <returns></returns>
-        public int GetBinaryBlockIndex(int varIndex, int BlockSize)
+        public int GetBinaryBlockIndex(int varIndex , int BlockSize)
         {
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
-            for (int i = 0; i < varIndex; i++)
+            for (int i = 0 ; i < varIndex ; i++)
             {
                 pVariableClass = _vars[i];
                 pBinaryBlockIndex += pVariableClass.LevelCount * BlockSize;
@@ -197,11 +202,11 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="BlockSize"></param>
         /// <param name="level"></param>
         /// <returns></returns>
-        public int GetBinaryBlockIndex(string strVarName, int BlockSize, int level)
+        public int GetBinaryBlockIndex(string strVarName , int BlockSize , int level)
         {
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
-            for (int i = 0; i < _vars.Count; i++)
+            for (int i = 0 ; i < _vars.Count ; i++)
             {
                 pVariableClass = _vars[i];
                 if (pVariableClass.VarName == strVarName)
@@ -219,19 +224,19 @@ namespace Readearth.GrADSBinary.DEF
         /// <param name="BlockSize"></param>
         /// <param name="levelIndex"></param>
         /// <returns></returns>
-        public int GetBinaryBlockIndex(int varIndex, int BlockSize, int levelIndex)
+        public int GetBinaryBlockIndex(int varIndex , int BlockSize , int levelIndex)
         {
 
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
-            for (int i = 0; i < varIndex; i++)
+            for (int i = 0 ; i < varIndex ; i++)
             {
                 pVariableClass = _vars[i];
                 pBinaryBlockIndex += pVariableClass.LevelCount * BlockSize;
             }
             pVariableClass = _vars[varIndex];
             if (levelIndex >= pVariableClass.LevelCount)
-                throw new ArgumentOutOfRangeException("levelIndex", levelIndex, "参数错误：levelIndex超出当前变量的LEVELS。");
+                throw new ArgumentOutOfRangeException ( "levelIndex" , levelIndex , "参数错误：levelIndex超出当前变量的LEVELS。" );
             pBinaryBlockIndex += levelIndex * BlockSize;
             return pBinaryBlockIndex;
         }

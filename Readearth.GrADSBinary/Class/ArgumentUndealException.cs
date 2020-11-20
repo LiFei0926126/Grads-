@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Readearth.GrADSBinary
 {
@@ -11,48 +9,48 @@ namespace Readearth.GrADSBinary
     {
         #region 成员变量
 
-        string _Msg = string.Empty;
+        private string _Msg = string.Empty;
         #endregion
 
         #region 构造函数
         /// <summary>
         /// 
         /// </summary>
-         public ArgumentUndealException(): base()
+        public ArgumentUndealException() : base ( )
         { }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="message"></param>
-         public ArgumentUndealException(string message)
-             : base(message)
-         {          
-         }
+        public ArgumentUndealException(string message)
+            : base ( message )
+        {
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
-         public ArgumentUndealException(string message, Exception innerException)
-             : base(message, innerException)
-         { }
+        public ArgumentUndealException(string message , Exception innerException)
+            : base ( message , innerException )
+        { }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="paramName"></param>
-         public ArgumentUndealException(string message, string paramName)
-             : base(message, paramName)
-         { }
+        public ArgumentUndealException(string message , string paramName)
+            : base ( message , paramName )
+        { }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="paramName"></param>
         /// <param name="innerException"></param>
-         public ArgumentUndealException(string message, string paramName, Exception innerException)
-             : base(message, paramName, innerException)
-         { }
+        public ArgumentUndealException(string message , string paramName , Exception innerException)
+            : base ( message , paramName , innerException )
+        { }
         #endregion
     }
 }

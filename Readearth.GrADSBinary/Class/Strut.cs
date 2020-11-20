@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Readearth.GrADSBinary
+﻿namespace Readearth.GrADSBinary
 {
     /// <summary>
     /// 网格中心点属性结构

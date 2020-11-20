@@ -23,7 +23,7 @@ namespace Readearth.GrADSBinary
         /// <param name="isPrjWith">是否输出PRJ文件。</param>
         /// <returns>返回输出是否成功。</returns>
         /// <exception cref="Exception">异常</exception>
-        bool Export2ASC(float[,] data, string outputPath, bool isPrjWith);
+        bool Export2ASC(float[,] data , string outputPath , bool isPrjWith);
 
         /// <summary>
         /// 输出到ASC文件。
@@ -35,7 +35,7 @@ namespace Readearth.GrADSBinary
         /// <param name="isPrjWith">是否输出PRJ文件。</param>
         /// <returns>返回输出是否成功。</returns>
         /// <exception cref="Exception">异常</exception>
-        bool Export2ASC(string VarName, int timeIndex, int Level, string outputPath, bool isPrjWith);
+        bool Export2ASC(string VarName , int timeIndex , int Level , string outputPath , bool isPrjWith);
         /// <summary>
         /// 读取数据
         /// </summary>
@@ -48,7 +48,7 @@ namespace Readearth.GrADSBinary
         /// <param name="VarName">要素</param>
         ///  <param name="timeIndex">时间维索引</param>
         /// <returns>返回数据数组</returns>
-        float[,,] ReadData(string VarName, int timeIndex);
+        float[,,] ReadData(string VarName , int timeIndex);
         /// <summary>
         /// 读取数据
         /// </summary>
@@ -56,7 +56,7 @@ namespace Readearth.GrADSBinary
         /// <param name="timeIndex">时间维索引</param>
         /// <param name="Level">层次</param>
         /// <returns>返回数据数组</returns>
-        float[,] ReadData(string VarName, int timeIndex, int Level);
+        float[,] ReadData(string VarName , int timeIndex , int Level);
         /// <summary>
         /// 读取数据
         /// </summary>
@@ -66,7 +66,7 @@ namespace Readearth.GrADSBinary
         /// <param name="iIndex">列索引</param>
         /// <param name="jIndex">行索引</param>
         /// <returns>返回数据</returns>
-        float ReadData(string VarName, int timeIndex, int Level, int iIndex, int jIndex);
+        float ReadData(string VarName , int timeIndex , int Level , int iIndex , int jIndex);
         /// <summary>
         /// 读取数据
         /// </summary>
@@ -76,7 +76,7 @@ namespace Readearth.GrADSBinary
         /// <param name="lon">经度</param>
         /// <param name="lat">纬度</param>
         /// <returns>返回数据</returns>
-        float ReadData(string VarName, int timeIndex, int Level, double lon, double lat);
+        float ReadData(string VarName , int timeIndex , int Level , double lon , double lat);
         /// <summary>
         /// 验证数据
         /// </summary>

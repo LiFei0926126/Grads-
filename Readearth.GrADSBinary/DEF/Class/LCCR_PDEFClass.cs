@@ -35,7 +35,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// The size of the native grid in the x direction
         /// </summary>
-       int ILCCR_PDEF.ISize
+       int ISize
         {
             get
             {
@@ -46,7 +46,7 @@ namespace Readearth.GrADSBinary.DEF
         /// <summary>
         /// The size of the native grid in the y direction
         /// </summary>
-        int ILCCR_PDEF.JSize
+        int JSize
         {
             get
             {

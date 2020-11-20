@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Readearth.GrADSBinary.DEF
+﻿namespace Readearth.GrADSBinary.DEF
 {
     /// <summary>
     /// 可选项

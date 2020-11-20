@@ -1,44 +1,41 @@
-﻿using System;
+﻿#define test
+
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
-using Readearth.GrADSBinary.DEF;
+
 using Projection;
+
+using Readearth.GrADSBinary.DEF;
 
 namespace Readearth.GrADSBinary
 {
     /// <summary>
     /// CTL文件解析类
     /// </summary>
-    public class CTLInfoClass : Object, Readearth.GrADSBinary.ICTLInfo
+    public class CTLInfoClass : object, ICTLInfo
     {
         #region 常量
-        const string empty = "";
+        private const string PATTERN_WithNum = "(^[x|y|z]def)\\s+[1-9]{1}[0-9]{0,}";
         #endregion
 
         #region 成员变量
-        string _ctlFielPath;
-        string _DSET = string.Empty, _Title = string.Empty;
-        float _Undef = float.NaN;
-        //PDEFClass _PDEF = null;
-        //XDEFClass _XDEF = null;
-        //YDEFClass _YDEF = null;
-        //ZDEFClass _ZDEF = null;
-        //TDEFClass _TDEF = null;
-        //VARSClass _VARS = null;
-        IOptions _Options = null;
-        IPDEF _PDEF = null;
-        IXDEF _XDEF = null;
-        IYDEF _YDEF = null;
-        IZDEF _ZDEF = null;
-        ITDEF _TDEF = null;
-        IVARS _VARS = null;
-
-        LamProjection lp;
-        bool _IsCTLFileLoaded = false;
-
-        double _Orgin_Lat = double.NaN;
+        private string _ctlFielPath;
+        private string _Dset = string.Empty, _Title = string.Empty;
+        private float _Undef = float.NaN;
+        private IOptions _Options = null;
+        private IPDef _PDef = null;
+        private IXDef _XDef = null;
+        private IYDef _YDef = null;
+        private IZDef _ZDef = null;
+        private ITDef _TDef = null;
+        private IVars _Vars = null;
+        private IEDef _EDef = null;
+        private LamProjection lp;
+        private bool _IsCTLFileLoaded = false;
+        private double _Orgin_Lat = double.NaN;
         #endregion
 
         #region 构造函数
@@ -46,71 +43,66 @@ namespace Readearth.GrADSBinary
         /// 构造函数
         /// </summary>
         /// <param name="strCTLPath"></param>
-        public CTLInfoClass(string strCTLPath = empty)
+        public CTLInfoClass(string strCTLPath = "")
         {
-            if (!string.IsNullOrEmpty(strCTLPath))
+            if (!string.IsNullOrEmpty ( strCTLPath ))
             {
                 _ctlFielPath = strCTLPath;
-                LoadCTL(_ctlFielPath);
+                LoadCTL ( _ctlFielPath );
             }
         }
         #endregion
 
         #region 私有函数
-        void Prase(string strPara)
+        private void Prase(string strPara)
         {
+            string[] paras = Regex.Split ( strPara.Trim ( ) , "\\s+" );
 
-            string[] paras = Regex.Split(strPara.Trim(), "\\s+");
+            bool useTemplates = false;
 
-            switch (paras[0].ToLower())
+            switch (paras[0].ToLower ( ))
             {
                 case "dset":
-                    _DSET = paras[1];
+                    _Dset = paras[1].Remove ( 0 , 1 );
+                    useTemplates = _Dset.Contains ( "%" );
                     break;
                 case "title":
-                    List<string> tmp = new List<string>(paras);
-                    tmp.RemoveAt(0);
-                    _Title = string.Join(" ", tmp.ToArray());
+                    List<string> tmp = new List<string> ( paras );
+                    tmp.RemoveAt ( 0 );
+                    _Title = string.Join ( " " , tmp.ToArray ( ) );
                     break;
                 case "options":
-                    tmp = new List<string>(paras);
-                    //tmp.RemoveAt(0);
-                    _Options = new Options(string.Join(" ", tmp.ToArray()));
+                    tmp = new List<string> ( paras );
+                    _Options = new Options ( string.Join ( " " , tmp.ToArray ( ) ) );
+                    if (useTemplates != _Options.UseTemplates)
+                        throw new Exception ( "CTL 文件描述错误。" );
                     break;
                 case "undef":
-                    _Undef = float.Parse(paras[1]);
+                    _Undef = float.Parse ( paras[1] );
                     break;
                 case "pdef":
-                    _PDEF = new PDEFClass(string.Join(" ", paras));
-                    switch (_PDEF.Pro_Type)
-                    {
-                        case Pro_Type.LCC:
-                            _PDEF = new LCC_PDEFClass(string.Join(" ", paras));
-                            break;
-                        case Pro_Type.LCCR:
-                            _PDEF = new LCCR_PDEFClass(string.Join(" ", paras));
-                            break;
-
-                    }
+                    _PDef = new PDefClass ( string.Join ( " " , paras ) );
 
                     break;
                 case "xdef":
-                    _XDEF = new XDEFClass(string.Join(" ", paras));
+                    _XDef = new XDefClass ( string.Join ( " " , paras ) );
                     break;
                 case "ydef":
-                    _YDEF = new YDEFClass(string.Join(" ", paras));
+                    _YDef = new YDefClass ( string.Join ( " " , paras ) );
                     break;
                 case "zdef":
-                    _ZDEF = new ZDEFClass(string.Join(" ", paras));
+                    _ZDef = new ZDefClass ( string.Join ( " " , paras ) );
                     break;
                 case "tdef":
-                    _TDEF = new TDEFClass(string.Join(" ", paras));
+                    _TDef = new TDefClass ( string.Join ( " " , paras ) );
                     break;
                 case "vars":
-                    _VARS = new VARSClass(strPara);
+                    _Vars = new VarsClass ( strPara );
+                    break;
+                case "edef":
+                    _EDef = new EDefClass ( strPara );
                     break;
             }
-
         }
         #endregion
 
@@ -122,55 +114,51 @@ namespace Readearth.GrADSBinary
         public bool LoadCTL()
         {
             _IsCTLFileLoaded = false;
-            StreamReader sr = new StreamReader(_ctlFielPath);
-            string strLine = "";
-            while ((strLine = sr.ReadLine()) != null)
+            StreamReader sr = new StreamReader ( _ctlFielPath );
+            string[] strLines = sr.ReadToEnd ( ).Split ( new string[] { "\n" } , StringSplitOptions.None );
+            sr.Close ( );
+
+            for (int i = 0 ; i < strLines.Length ; i++)
             {
-                string strPattern = "^vars\\s+[1-9]{1}[0-9]{0,}$";
-                string strPattern1 = "^zdef\\s+[1-9]{1}[0-9]{0,}";
-                //^endvars$
-                if (Regex.IsMatch(strLine, strPattern, RegexOptions.IgnoreCase))
-                {
-                    StringBuilder sb = new StringBuilder();
-                    string strPatternEnd = "^endvars$";
 
-                    do
-                    {
-                        sb.AppendLine(strLine.Trim(' '));
-                    }
-                    while (!Regex.IsMatch((strLine = sr.ReadLine()), strPatternEnd, RegexOptions.IgnoreCase));
-                    sb.AppendLine(strLine.Trim(' '));
-
-                    Prase(sb.ToString());
-                }
-                else if (Regex.IsMatch(strLine, strPattern1, RegexOptions.IgnoreCase))
+                Match m = Regex.Match ( strLines[i] , EDefClass.StrRegexBegin + "|" + VarsClass.StrRegexBegin , RegexOptions.IgnoreCase );
+                //EDEF 和 VARS的特殊处理
+                if (m.Success)
                 {
-                    if (Regex.IsMatch(strLine, "levels", RegexOptions.IgnoreCase))
+                    StringBuilder sb = new StringBuilder ( strLines[i] + "  " );
+                    if (!Regex.IsMatch ( strLines[i] , "NAMES" ))
                     {
-                        StringBuilder sb = new StringBuilder();
-                        //string strPatternEnd = "^endvars$";
-                        string[] des = Regex.Split(strLine.Trim(), "\\s+");
-                        //do
-                        sb.Append(strLine);
-                        while (Regex.Split(sb.ToString(), "\\s+").Length < des.Length + int.Parse(des[1]))
+                        while (!Regex.IsMatch ( strLines[i] , "^END" + m.Value , RegexOptions.IgnoreCase ))
                         {
-                            strLine = sr.ReadLine();
-
-                            sb.Append(" " + strLine.Trim());
+                            sb.AppendLine ( " " + strLines[i] );
+                            i++;
                         }
-                        //sb.Append(" " + strLine.Trim(' '));
-
-                        Prase(sb.ToString());
+                        sb.AppendLine ( " " + strLines[i] );
                     }
-                    else
-                        Prase(strLine.Trim());
+                    Prase ( sb.ToString ( ) );
+                    sb.Length = 0;
                 }
+
+                //XDEF、YDEF 和 ZDEF 的处理
+                else if (Regex.IsMatch ( strLines[i] , PATTERN_WithNum , RegexOptions.IgnoreCase ))
+                {
+                    StringBuilder sb = new StringBuilder ( );
+                    string[] des = Regex.Split ( strLines[i].Trim ( ) , "\\s+" );
+                    int num = int.Parse ( des[1] );
+                    while (Regex.Split ( sb.ToString ( ) , "\\s+" ).Length < des.Length + num)
+                    {
+                        sb.AppendLine ( strLines[i].Trim ( ' ' ) );
+                        i++;
+                    }
+                    Prase ( sb.ToString ( ) );
+                    sb.Length = 0;
+                }
+                
+                //其余选项的处理
                 else
-                    Prase(strLine.Trim(' '));
+                    Prase ( strLines[i].Trim ( ' ' ) );
             }
 
-            sr.Close();
-            sr.Dispose();
             _IsCTLFileLoaded = true;
 
             return _IsCTLFileLoaded;
@@ -184,64 +172,13 @@ namespace Readearth.GrADSBinary
         {
             _IsCTLFileLoaded = false;
 
-            if (File.Exists(strCTLPath))
+            if (File.Exists ( strCTLPath ))
             {
                 _ctlFielPath = strCTLPath;
-                StreamReader sr = new StreamReader(strCTLPath);
-                string strLine = "";
-                while ((strLine = sr.ReadLine()) != null)
-                {
-                    string strPattern = "^vars\\s+[1-9]{1}[0-9]{0,}$";
-                    string strPattern1 = "^zdef\\s+[1-9]{1}[0-9]{0,}";
-                    //^endvars$
-                    if (Regex.IsMatch(strLine, strPattern, RegexOptions.IgnoreCase))
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        string strPatternEnd = "^endvars$";
-
-                        do
-                        {
-                            sb.AppendLine(strLine.Trim(' '));
-                        }
-                        while (!Regex.IsMatch((strLine = sr.ReadLine()), strPatternEnd, RegexOptions.IgnoreCase));
-                        sb.AppendLine(strLine.Trim(' '));
-
-                        Prase(sb.ToString());
-                    }
-                    else if (Regex.IsMatch(strLine, strPattern1, RegexOptions.IgnoreCase))
-                    {
-                        if (Regex.IsMatch(strLine, "levels", RegexOptions.IgnoreCase))
-                        {
-                            StringBuilder sb = new StringBuilder();
-                            //string strPatternEnd = "^endvars$";
-                            string[] des = Regex.Split(strLine.Trim(), "\\s+");
-                            //do
-                            sb.Append(strLine);
-                            while (Regex.Split(sb.ToString(), "\\s+").Length < des.Length + int.Parse(des[1]))
-                            {
-                                strLine = sr.ReadLine();
-
-                                sb.Append(" " + strLine.Trim());
-                            }
-                            //sb.Append(" " + strLine.Trim(' '));
-
-                            Prase(sb.ToString());
-                        }
-                        else
-                            Prase(strLine.Trim());
-                    }
-                    else
-                        Prase(strLine.Trim(' '));
-                }
-
-                sr.Close();
-                sr.Dispose();
-                _IsCTLFileLoaded = true;
-
-                return _IsCTLFileLoaded;
+                return LoadCTL ( );
             }
             else
-                throw new Exception("CTL文件不存在。");
+                throw new Exception ( "CTL文件不存在。" );
         }
         /// <summary>
         /// 根据经纬度计算行列索引号。
@@ -249,24 +186,25 @@ namespace Readearth.GrADSBinary
         /// <param name="lon">经度</param>
         /// <param name="lat">纬度</param>
         /// <returns></returns>
-        public XYPoint GetXYIndex(double lon, double lat)
+        public XYPoint GetXYIndex(double lon , double lat)
         {
-            XYPoint pXYIndex = new XYPoint();
+            XYPoint pXYIndex = new XYPoint
+            {
+                Long = (float)lon ,
+                Lat = (float)lat
+            };
 
-            pXYIndex.Long = (float)lon;
-            pXYIndex.Lat = (float)lat;
-
-            IPDEF pPDEF = this.PDEF;
-            switch (pPDEF.Pro_Type)
+            IPDef pPDef = this.PDef;
+            switch (pPDef.Pro_Type)
             {
                 case Pro_Type.LCC:
-                    ILCC_PDEF pLCC_PDEF = pPDEF as ILCC_PDEF;
-                    lp = new LamProjection(new VectorPointXY(pLCC_PDEF.SLon, Orgin_Lat), pLCC_PDEF.Struelat, pLCC_PDEF.Ntruelat, GeoRefEllipsoid.WGS_84);
-                    VectorPointXY xyRef = lp.GeoToProj(new VectorPointXY(pLCC_PDEF.LonRef, pLCC_PDEF.LatRef));
+                    ILcc_PDef pLCC_PDEF = pPDef as ILcc_PDef;
+                    lp = new LamProjection ( new VectorPointXY ( pLCC_PDEF.SLon , Orgin_Lat ) , pLCC_PDEF.Struelat , pLCC_PDEF.Ntruelat , GeoRefEllipsoid.WGS_84 );
+                    VectorPointXY xyRef = lp.GeoToProj ( new VectorPointXY ( pLCC_PDEF.LonRef , pLCC_PDEF.LatRef ) );
                     double xstart = xyRef.X + (0 - pLCC_PDEF.IRef) * pLCC_PDEF.DX;
                     double ystart = xyRef.Y + (0 - pLCC_PDEF.JRef) * pLCC_PDEF.DY;
 
-                    VectorPointXY xy = lp.GeoToProj(new VectorPointXY(lon, lat));
+                    VectorPointXY xy = lp.GeoToProj ( new VectorPointXY ( lon , lat ) );
                     double x = xy.X;
                     double y = xy.Y;
 
@@ -274,13 +212,13 @@ namespace Readearth.GrADSBinary
                     pXYIndex.RowIndex = (int)((y - ystart) / pLCC_PDEF.DY);
                     break;
                 case Pro_Type.LCCR:
-                    ILCCR_PDEF pLCCR_PDEF = pPDEF as ILCCR_PDEF;
-                    lp = new LamProjection(new VectorPointXY(pLCCR_PDEF.SLon, 0), pLCCR_PDEF.Struelat, pLCCR_PDEF.Ntruelat, GeoRefEllipsoid.WGS_84);
-                    xyRef = lp.GeoToProj(new VectorPointXY(pLCCR_PDEF.LonRef, pLCCR_PDEF.LatRef));
+                    ILccr_PDef pLCCR_PDEF = pPDef as ILccr_PDef;
+                    lp = new LamProjection ( new VectorPointXY ( pLCCR_PDEF.SLon , 0 ) , pLCCR_PDEF.Struelat , pLCCR_PDEF.Ntruelat , GeoRefEllipsoid.WGS_84 );
+                    xyRef = lp.GeoToProj ( new VectorPointXY ( pLCCR_PDEF.LonRef , pLCCR_PDEF.LatRef ) );
                     xstart = (0 - pLCCR_PDEF.IRef) * pLCCR_PDEF.DX + xyRef.X;
                     ystart = (0 - pLCCR_PDEF.JRef) * pLCCR_PDEF.DY + xyRef.Y;
 
-                    xy = lp.GeoToProj(new VectorPointXY(lon, lat));
+                    xy = lp.GeoToProj ( new VectorPointXY ( lon , lat ) );
                     x = xy.X;
                     y = xy.Y;
                     pXYIndex.ColIndex = (int)((x - xstart) / pLCCR_PDEF.DX);
@@ -296,17 +234,17 @@ namespace Readearth.GrADSBinary
         /// <param name="strVarName">变量名</param>
         /// <param name="level">z维索引</param>
         /// <returns>开始位置</returns>       
-        public int GetBinaryBlockIndex(string strVarName, int level)
+        public int GetBinaryBlockIndex(string strVarName , int level)
         {
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
-            for (int i = 0; i < _VARS.VarCount; i++)
+            for (int i = 0 ; i < _Vars.VarCount ; i++)
             {
-                pVariableClass = _VARS.VARS[i];
+                pVariableClass = _Vars.VARS[i];
                 if (pVariableClass.VarName == strVarName)
                 {
                     if (level >= pVariableClass.LevelCount)
-                        throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
+                        throw new ArgumentOutOfRangeException ( "level" , level , "参数错误：level超出当前变量的LEVELS。" );
                     pBinaryBlockIndex += level * BaseArraySize;
                     break;
                 }
@@ -322,19 +260,19 @@ namespace Readearth.GrADSBinary
         /// <param name="varIndex">变量索引</param>
         /// <param name="level">z维索引</param>
         /// <returns>开始位置</returns>
-        public int GetBinaryBlockIndex(int varIndex, int level)
+        public int GetBinaryBlockIndex(int varIndex , int level)
         {
 
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
-            for (int i = 0; i < varIndex; i++)
+            for (int i = 0 ; i < varIndex ; i++)
             {
-                pVariableClass = _VARS.VARS[i];
+                pVariableClass = _Vars.VARS[i];
                 pBinaryBlockIndex += pVariableClass.LevelCount * BaseArraySize;
             }
-            pVariableClass = _VARS.VARS[varIndex];
+            pVariableClass = _Vars.VARS[varIndex];
             if (level >= pVariableClass.LevelCount)
-                throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
+                throw new ArgumentOutOfRangeException ( "level" , level , "参数错误：level超出当前变量的LEVELS。" );
             pBinaryBlockIndex += level * BaseArraySize;
             return pBinaryBlockIndex;
         }
@@ -346,17 +284,17 @@ namespace Readearth.GrADSBinary
         /// <param name="timeIndex">时间维索引</param>
         /// <param name="level">z维索引</param>
         /// <returns>开始位置</returns>       
-        public int GetBinaryBlockIndex(string strVarName, int timeIndex, int level)
+        public int GetBinaryBlockIndex(string strVarName , int timeIndex , int level)
         {
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
-            for (int i = 0; i < _VARS.VarCount; i++)
+            for (int i = 0 ; i < _Vars.VarCount ; i++)
             {
-                pVariableClass = _VARS.VARS[i];
+                pVariableClass = _Vars.VARS[i];
                 if (pVariableClass.VarName == strVarName)
                 {
                     if (level >= pVariableClass.LevelCount)
-                        throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
+                        throw new ArgumentOutOfRangeException ( "level" , level , "参数错误：level超出当前变量的LEVELS。" );
                     pBinaryBlockIndex += level * BaseArraySize;
                     break;
                 }
@@ -373,19 +311,19 @@ namespace Readearth.GrADSBinary
         /// <param name="timeIndex">时间维索引</param>
         /// <param name="level">z维索引</param>
         /// <returns>开始位置</returns>
-        public int GetBinaryBlockIndex(int varIndex, int timeIndex, int level)
+        public int GetBinaryBlockIndex(int varIndex , int timeIndex , int level)
         {
 
             int pBinaryBlockIndex = 0;
             VariableClass pVariableClass = null;
-            for (int i = 0; i < varIndex; i++)
+            for (int i = 0 ; i < varIndex ; i++)
             {
-                pVariableClass = _VARS.VARS[i];
+                pVariableClass = _Vars.VARS[i];
                 pBinaryBlockIndex += pVariableClass.LevelCount * BaseArraySize;
             }
-            pVariableClass = _VARS.VARS[varIndex];
+            pVariableClass = _Vars.VARS[varIndex];
             if (level >= pVariableClass.LevelCount)
-                throw new ArgumentOutOfRangeException("level", level, "参数错误：level超出当前变量的LEVELS。");
+                throw new ArgumentOutOfRangeException ( "level" , level , "参数错误：level超出当前变量的LEVELS。" );
             pBinaryBlockIndex += level * BaseArraySize;
             return pBinaryBlockIndex + timeIndex * TimePageSize;
         }
@@ -396,100 +334,94 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 
         /// </summary>
-        public bool IsCTLFileLoaded
-        {
-            get
-            {
-                return _IsCTLFileLoaded;
-            }
-        }
+        public bool IsCTLFileLoaded => _IsCTLFileLoaded;
         /// <summary>
         /// 变量集合。
         /// </summary>
-        public IVARS VARS
+        public IVars Vars
         {
             get
             {
-                if (_VARS == null)
-                    throw new ArgumentNullException("VARS", "VARS参数为空。");
+                if (_Vars == null)
+                    throw new ArgumentNullException ( "VARS" , "VARS参数为空。" );
                 else
-                    return _VARS;
+                    return _Vars;
             }
         }
         /// <summary>
         /// 定义格点数据的x维或者经向格点值。
         /// </summary>
-        public IXDEF XDEF
+        public IXDef XDef
         {
             get
             {
-                if (_XDEF == null)
-                    throw new ArgumentNullException("XDEF", "XDEF参数为空。");
+                if (_XDef == null)
+                    throw new ArgumentNullException ( "XDEF" , "XDEF参数为空。" );
                 else
-                    return _XDEF;
+                    return _XDef;
             }
         }
         /// <summary>
         /// 定义格点数据的y维或者纬向格点值。
         /// </summary>
-        public IYDEF YDEF
+        public IYDef YDef
         {
             get
             {
-                if (_YDEF == null)
-                    throw new ArgumentNullException("YDEF", "YDEF参数为空。");
+                if (_YDef == null)
+                    throw new ArgumentNullException ( "YDEF" , "YDEF参数为空。" );
                 else
-                    return _YDEF;
+                    return _YDef;
             }
         }
         /// <summary>
         /// 定义格点数据的z维格点值。
         /// </summary>
-        public IZDEF ZDEF
+        public IZDef ZDef
         {
             get
             {
-                if (_ZDEF == null)
-                    throw new ArgumentNullException("ZDEF", "ZDEF参数为空。");
+                if (_ZDef == null)
+                    throw new ArgumentNullException ( "ZDEF" , "ZDEF参数为空。" );
                 else
-                    return _ZDEF;
+                    return _ZDef;
             }
         }
         /// <summary>
         /// 定义格点数据显示到地图上的投影方式。
         /// </summary>
-        public IPDEF PDEF
+        public IPDef PDef
         {
             get
             {
-                if (_PDEF == null)
-                    throw new ArgumentNullException("PDEF", "PDEF参数为空。");
+                if (_PDef == null)
+                    throw new ArgumentNullException ( "PDEF" , "PDEF参数为空。" );
                 else
-                    return _PDEF;
+                    return _PDef;
             }
         }
         /// <summary>
         /// 定义格点数据的T维格点值。
         /// </summary>
-        public ITDEF TDEF
+        public ITDef TDef
         {
             get
             {
-                if (_TDEF == null)
-                    throw new ArgumentNullException("TDEF", "TDEF参数为空。");
+                if (_TDef == null)
+                    throw new ArgumentNullException ( "TDEF" , "TDEF参数为空。" );
                 else
-                    return _TDEF;
+                    return _TDef;
             }
         }
         /// <summary>
         /// 标识未定义或者缺失数据值。
         /// </summary>
-        public float UNDEF
+        public float UNDef
         {
             get
             {
                 if (_Undef == float.NaN)
-                    throw new ArgumentNullException("UNDEF", "UNDEF参数为空。");
+                    throw new ArgumentNullException ( "UNDEF" , "UNDEF参数为空。" );
                 else
                     return _Undef;
             }
@@ -497,14 +429,14 @@ namespace Readearth.GrADSBinary
         /// <summary>
         /// 标识对应数据文件的描述。
         /// </summary>
-        public string DSET
+        public string Dset
         {
             get
             {
-                if (string.IsNullOrEmpty(_DSET))
-                    throw new ArgumentNullException("DEST", "DEST参数为空。");
+                if (string.IsNullOrEmpty ( _Dset ))
+                    throw new ArgumentNullException ( "DEST" , "DEST参数为空。" );
                 else
-                    return _DSET;
+                    return _Dset;
             }
         }
         /// <summary>
@@ -514,8 +446,8 @@ namespace Readearth.GrADSBinary
         {
             get
             {
-                if (string.IsNullOrEmpty(_Title))
-                    throw new ArgumentNullException("Title", "Title参数为空。");
+                if (string.IsNullOrEmpty ( _Title ))
+                    throw new ArgumentNullException ( "Title" , "Title参数为空。" );
                 else
                     return _Title;
             }
@@ -528,9 +460,22 @@ namespace Readearth.GrADSBinary
             get
             {
                 if (_Options == null)
-                    throw new ArgumentNullException("Options", "Options参数为空。");
+                    throw new ArgumentNullException ( "Options" , "Options参数为空。" );
                 else
                     return _Options;
+            }
+        }
+        /// <summary>
+        /// 定义格点数据的E维格点值。
+        /// </summary>
+        public IEDef EDef
+        {
+            get
+            {
+                if (_EDef == null)
+                    throw new ArgumentNullException ( "EDef" , "EDef参数为空。" );
+                else
+                    return _EDef;
             }
         }
         /// <summary>
@@ -540,19 +485,11 @@ namespace Readearth.GrADSBinary
         {
             get
             {
-                if (_PDEF != null)
-                    switch (this._PDEF.Pro_Type)
-                    {
-                        case Pro_Type.LCC:
-                            return ((ILCC_PDEF)_PDEF).ISize;
-                        case Pro_Type.LCCR:
-                            return ((ILCCR_PDEF)_PDEF).ISize;
-                        default:
-                            throw new ArgumentUndealException("参数错误：未对该投影类型进行处理。", new ArgumentException("参数错误：未处理该参数。", "this._PDEF.Pro_Type"));
-                    }
+                if (_PDef != null)
+                    return _PDef.ISize;
                 else
                 {
-                    return _XDEF.XSize;
+                    return _XDef.XSize;
                 }
             }
         }
@@ -563,71 +500,49 @@ namespace Readearth.GrADSBinary
         {
             get
             {
-                if (_PDEF != null)
-                    switch (this._PDEF.Pro_Type)
-                    {
-                        case Pro_Type.LCC:
-                            return ((ILCC_PDEF)_PDEF).JSize;
-                        case Pro_Type.LCCR:
-                            return ((ILCCR_PDEF)_PDEF).JSize;
-                        default:
-                            throw new ArgumentUndealException("参数错误：未对该投影类型进行处理。", new ArgumentException("参数错误：未处理该参数。", "this._PDEF.Pro_Type"));
-                    }
+                if (_PDef != null)
+                    return _PDef.JSize;
                 else
-                    return _YDEF.YSize;
+                    return _YDef.YSize;
             }
         }
         /// <summary>
         /// 基础数据块大小（bytes）
         /// </summary>
-        public int BaseArraySize
-        {
-            get
-            {
-                return XSize * YSize * 4;
-            }
-        }
+        public int BaseArraySize => XSize * YSize * 4;
 
 
         /// <summary>
         /// 时次基础数据块大小（bytes）
         /// </summary>
-        public int TimePageSize
-        {
-            get
-            {
-                return _VARS.BlocksCount * BaseArraySize;
-            }
-        }
+        public int TimePageSize => _Vars.BlocksCount * BaseArraySize;
 
         /// <summary>
         /// 原点纬度
         /// </summary>
         public double Orgin_Lat
         {
-            set
-            {
-                _Orgin_Lat = value;
-            }
+            set => _Orgin_Lat = value;
             get
             {
-                if (Double.IsNaN(_Orgin_Lat))
+                if (Double.IsNaN ( _Orgin_Lat ))
                 {
-                    switch (this.PDEF.Pro_Type)
+                    switch (PDef.Pro_Type)
                     {
                         case Pro_Type.LCC:
-                            return ((ILCC_PDEF)PDEF).LatRef;
+                            return ((ILcc_PDef)PDef).LatRef;
                         case Pro_Type.LCCR:
-                            return ((ILCCR_PDEF)PDEF).LatRef;
+                            return ((ILccr_PDef)PDef).LatRef;
                         default:
-                            throw new ArgumentUndealException("参数错误：未对该投影类型进行处理。", new ArgumentException("参数错误：未处理该参数。", "this._PDEF.Pro_Type"));
+                            throw new ArgumentUndealException ( "参数错误：未对该投影类型进行处理。" , new ArgumentException ( "参数错误：未处理该参数。" , "PDEF.Pro_Type" ) );
                     }
                 }
-                    
+
                 else
                     return _Orgin_Lat;
             }
         }
+       
         #endregion
     }
 
