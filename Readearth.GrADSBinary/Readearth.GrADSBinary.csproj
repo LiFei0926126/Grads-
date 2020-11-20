@@ -87,7 +87,6 @@
     <Compile Include="DEF\Class\XDefClass.cs" />
     <Compile Include="DEF\Class\YDefClass.cs" />
     <Compile Include="DEF\Class\ZDefClass.cs" />
-    <Compile Include="Class\GrADSEventArgs.cs" />
     <Compile Include="DEF\Class\Options.cs" />
     <Compile Include="DEF\Interface\IOptions.cs" />
     <Compile Include="Interface\IBinaryData.cs" />
@@ -98,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DLL\Projection.dll" />
-    <Content Include="使用说明.txt" />
+    <None Include="Readme.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Readearth.GrADSBinary.cd" />

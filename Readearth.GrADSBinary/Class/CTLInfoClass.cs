@@ -1,17 +1,25 @@
-﻿#define test
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-
-using Projection;
-
-using Readearth.GrADSBinary.DEF;
-
+﻿/**************版本信息**************
+ * 文 件 名:   CTLInfoClass.cs
+ * 描    述: 
+ * 
+ * 版    本：  V1.0
+ * 创 建 者：  LiFei
+ * 创建时间：  2019/4/29 18:39
+ * ======================================
+ * 历史更新记录
+ * 版本：V          修改时间：         修改人：
+ * 修改内容：
+ * ======================================
+**************版本信息**************/
 namespace Readearth.GrADSBinary
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using Projection;
+    using Readearth.GrADSBinary.DEF;
     /// <summary>
     /// CTL文件解析类
     /// </summary>
@@ -153,7 +161,7 @@ namespace Readearth.GrADSBinary
                     Prase ( sb.ToString ( ) );
                     sb.Length = 0;
                 }
-                
+
                 //其余选项的处理
                 else
                     Prase ( strLines[i].Trim ( ' ' ) );
@@ -542,7 +550,7 @@ namespace Readearth.GrADSBinary
                     return _Orgin_Lat;
             }
         }
-       
+
         #endregion
     }
 
